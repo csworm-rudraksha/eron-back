@@ -138,6 +138,7 @@ router.post('/login', validateLogin, async (req, res) => {
 
       res.status(200).json({
         message: 'Login successful',
+        token: token, // Include token in response for localStorage fallback
         user: {
           id: user.id,
           email: user.email,
