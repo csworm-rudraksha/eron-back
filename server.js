@@ -36,7 +36,9 @@ app.use(limiter);
 
 // CORS configuration
 app.use(cors({
-  origin: true, // Allow all origins for testing
+  origin: process.env.NODE_ENV === 'production' 
+    ? [process.env.FRONTEND_URL, 'https://your-frontend-domain.onrender.com'] // Add your frontend URL here
+    : true, // Allow all origins for development
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
