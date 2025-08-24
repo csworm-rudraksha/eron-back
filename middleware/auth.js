@@ -1,11 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const authenticateToken = (req, res, next) => {
-  // Try to get token from Authorization header first, then from cookies
-  const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.startsWith('Bearer ') 
-    ? authHeader.substring(7) 
-    : req.cookies.token;
+  const token = req.cookies.token;
   
   if (!token) {
     return res.status(401).json({ 
@@ -39,9 +35,8 @@ const setTokenCookie = (res, token) => {
   res.cookie('token', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined
+    sameSite: 'none',
+    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
   });
 };
 
